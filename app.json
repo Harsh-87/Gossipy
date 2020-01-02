@@ -1,9 +1,8 @@
 {
-  "name": "Socket-Chat-Example",
-  "description": "my first socket.io app",
-  "website": "https://github.com/socketio/chat-example",
-  "repository": "https://github.com/socketio/chat-example",
-  "logo": "https://node-js-sample.herokuapp.com/node.svg",
+  "name": "gossipy",
+  "description": "Gossipy Chat Application",
+  "website": "https://github.com/Harsh-87/Gossipy",
+  "repository": "https://github.com/Harsh-87/Gossipy",
   "success_url": "/",
   "keywords": [
     "node",
@@ -16,7 +15,4 @@
   },
   "addons": [
   ],
-  "env": {
-    "BUILDPACK_URL": "https://github.com/heroku/heroku-buildpack-nodejs"
-  }
 }
