@@ -5,9 +5,9 @@ let i = 0,
     my_room = '';
 const socket = io();
 
+//executes on being ready
 $(document).ready(() => {
     new MainChat();
-
 });
 
 // A base class is defined using the new reserved 'class' keyword
@@ -18,6 +18,7 @@ class MainChat {
         MainChat.LoadEventHandlers();
     }
 
+    //set time for each chat message
     static setDate() {
         let d = new Date();
         let hrs = d.getHours();
@@ -29,6 +30,7 @@ class MainChat {
             $('<div class="timestamp">' + hrs + ':' + min + ' am</div>').appendTo($('.message:last'));
     }
 
+    //sends messages
     static insertMessage() {
         const msg = $('.message-input').val();
         if ($.trim(msg) == '') return false;
@@ -52,8 +54,14 @@ class MainChat {
             }
         });
 
+        //to disconnect user
+        $(".logmeout").click(()=>{
+            socket.disconnect();
+            window.location.href = "/logout";
+        });
+
         // listener, whenever the server emits 'updatechat', this updates the chat body
-        socket.on('updatechat', function(sender, data) {
+        socket.on('updatechat', function (sender, data) {
             if (sender === my_username) {
                 $('<div class="message message-personal">You  :  ' + data + '</div>').appendTo($('.mCSB_container')).addClass('new');
                 MainChat.setDate();
@@ -67,19 +75,23 @@ class MainChat {
 
         // on connection to server, ask for user's name with an anonymous callback
         socket.on('connect', () => {
-            my_room = prompt("What's the room name?");
+            my_room = localStorage.getItem('roomname');
+            my_username = localStorage.getItem('username');
+            if (my_room == null || my_username == null) {
+                $.get("/logout", function (data, status) {
+                    console.log(status);
+                });
+            }
             $('#room-name').text("Room : " + my_room);
-            my_username = prompt("What's your name?");
             $('.online-bullet').text(my_username);
-            socket.emit('adduser', my_username, my_room);
-            $('#typer').keypress(function() {
+            socket.emit('adduser', my_room, my_username);
+            $('#typer').keypress(function () {
                 socket.emit("typing", my_username);
             });
         });
 
-
-
-        socket.on('member update', function(rooms) {
+        //update member list
+        socket.on('member update', function (rooms, roomname, name) {
             $('.room-member').empty();
             for (let r in rooms) {
                 if (rooms[r] === my_room) {
@@ -89,18 +101,21 @@ class MainChat {
         });
 
         var timeout;
-
+        //show typing user
         socket.on('type-send', username => {
             console.log("I am " + username);
             $('#typing').text(`${username} is typing...`);
-
+            //for already running timeout
             if (timeout) {
                 clearTimeout(timeout);
             }
-
             timeout = setTimeout(() => {
                 $('#typing').text(``);
             }, 1000);
+
+        });
+
+        socket.on('disconnect', () => {
 
         });
     }

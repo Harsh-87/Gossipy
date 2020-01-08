@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Join Room</title>
+    <link rel="stylesheet" href="./public/css/login.css">
+    <link rel="stylesheet" href="./public/css/toast.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <h1>Welcome</h1>
+
+            <form class="form" action="/register" method="post">
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit" id="login-button">Register</button>
+                <h3 style="margin-top: 20px;">OR</h3>
+            </form>
+            <a class="register-btn" href="/login">Login</a>
+        </div>
+
+        <ul class="bg-bubbles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script>$("#login-button").click(function (event) {
+            event.preventDefault();
+            $('.wrapper').addClass('form-success');
+            $('form').fadeOut(500);
+            $('form').submit();
+            $.toast({
+                heading: 'Success',
+                text: 'Succesfully registered!!',
+                showHideTransition: 'slide',
+                icon: 'success'
+            });
+        });
+    </script>
+    <script src="./public/js/toast.js"></script>
+</body>
+
+</html>

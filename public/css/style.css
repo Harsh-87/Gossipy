@@ -29,22 +29,9 @@ body {
 }
 
 .jumbotron {
-    height: 85px;
+    height: 10%;
     padding: 10px;
     background-color: #044f48;
-}
-
-.bg {
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    background: url("https://wmuza.github.io/SocketIO-Chat-App/public/img/sa.png") no-repeat 0 0;
-    -webkit-filter: blur(80px);
-    filter: blur(80px);
-    -webkit-transform: scale(1.2);
-    transform: scale(1.2);
 }
 
 .online-bullet {

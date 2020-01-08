@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Join Room</title>
+    <link rel="stylesheet" href="../public/css/login.css">
+    <link rel="stylesheet" href="./public/css/toast.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <h1>Welcome</h1>
+
+            <form class="form" action="/login" method="post">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <input type="text" name="roomname" placeholder="Room Name" required>
+                <button type="submit" id="login-button">Join Room</button>
+                <h3 style="margin-top: 20px;">OR</h3>
+            </form>
+            <a class="register-btn" href="/register">Register</a>
+
+        </div>
+
+        <ul class="bg-bubbles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script>$("#login-button").click(function (event) {
+            event.preventDefault();
+            $('form').fadeOut(500);
+            window.localStorage.setItem('username', $("input[name=username]").val());
+            window.localStorage.setItem('roomname', $("input[name=roomname]").val());
+            $('.wrapper').addClass('form-success');
+            $('form').submit();
+            $.toast({
+                heading: 'Success',
+                text: 'Succesfully registered!!',
+                showHideTransition: 'slide',
+                icon: 'success'
+            });
+        });
+    </script>
+    <script src="./public/js/toast.js"></script>
+
+
+</body>
+
+</html>

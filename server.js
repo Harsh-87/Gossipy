@@ -3,57 +3,41 @@
  * Version: 1.0.0
  */
 'use strict';
+
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+var auth = require('./controllers/authentication.js');
+var routes = require('./routes/routes.js');
 var http = require('http').Server(app);
-var io = require('socket.io')(http);
-var port = process.env.PORT || 3000;
+var socketController = require('./controllers/socketController.js');
 
-
-app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use('/public', express.static('public'))
 
-app.get('/', function(req, res) {
-    res.sendFile(__dirname + "/");
-});
+//passport athentication using local strategy
+auth.protect(app);
 
+//mongo database connection
+if(process.env.PORT){
+    mongoose.connect(process.env.PORT,{ useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true });
+}else{
+    const config = require('./appConfig.js');
+    mongoose.connect(config.DBURL,{ useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true });
+}
 
-// usernames which are currently connected to the chat
-let usernames = {};
-let rooms = {};
+//making public folder static to use resources
+app.use('/public', express.static('public'));
 
-io.on('connection', function(socket) {
-    socket.on('sendchat', (data) => {
-        io.to(socket.roomname).emit('updatechat', socket.username, data);
-    });
+//setup sockets
+var io = require('socket.io')(http);
+socketController(io);
 
-    // when the client emits 'adduser', this listens and executes
-    socket.on('adduser', (username, roomname) => {
-        socket.username = username;
-        socket.roomname = roomname;
-        socket.join(roomname);
-        usernames[username] = socket.id;
-        rooms[username] = roomname;
-        io.to(roomname).emit('updatechat', socket.username, `joined the chat`);
-        io.to(roomname).emit('member update', rooms);
-    });
+//routes to listen
+routes.initialize(app);
 
-    socket.on('typing', (name) => {
-        socket.broadcast.to(socket.roomname).emit('type-send', name);
-    });
-
-    // when the user disconnects.. perform this
-    socket.on('disconnect', () => {
-        socket.broadcast.to(socket.roomname).emit('updatechat', socket.username, `disconnected`);
-        delete usernames[socket.username];
-        delete rooms[socket.username];
-        io.to(socket.roomname).emit('member update', rooms);
-    });
-
-});
-
+//port to listen
+var port = process.env.PORT || 3000;
 http.listen(port, function() {
     console.log('listening on :' + port);
 });
