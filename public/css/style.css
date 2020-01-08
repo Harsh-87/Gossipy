@@ -19,19 +19,10 @@ body {
 }
 
 body {
-    background: -webkit-linear-gradient(315deg, #26A96C, #044f48);
-    background: linear-gradient(135deg, #26A96C, #044f48);
-    background-size: cover;
     font-family: 'Open Sans', sans-serif;
     font-size: 12px;
     line-height: 1.3;
     overflow: hidden;
-}
-
-.jumbotron {
-    height: 10%;
-    padding: 10px;
-    background-color: #044f48;
 }
 
 .online-bullet {
