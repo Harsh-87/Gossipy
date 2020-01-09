@@ -19,7 +19,7 @@ module.exports = function (app) {
             password: user_password
         });
         req.login(user, function (err) {
-            if (err) { console.log(err); alert("Failed"); }
+            if (err) { console.log(err);res.redirect("/login"); }
             else {
                 passport.authenticate('local')(req, res, function () {
                     res.redirect("/");

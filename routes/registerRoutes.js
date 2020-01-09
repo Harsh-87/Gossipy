@@ -16,7 +16,6 @@ module.exports = function (app) {
         User.register({ username: user_name }, user_password, function (err, user) {
             if (err) {
                 console.log(err);
-                alert("Failed");
                 res.redirect("/register");
             }
         });
