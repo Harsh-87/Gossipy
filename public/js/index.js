@@ -57,7 +57,7 @@ class MainChat {
         //to disconnect user
         $(".logmeout").click(()=>{
             socket.disconnect();
-            window.location.href = "/logout";
+            window.location.href = "/user/logout";
         });
 
         // listener, whenever the server emits 'updatechat', this updates the chat body
